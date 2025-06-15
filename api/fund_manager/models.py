@@ -1,9 +1,15 @@
+from django.contrib.auth.models import User
 from django.db import models
 
+from api.institute.models import Institute
 
-class Institute(models.Model):
-    name = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
+
+class FundManager(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    institute = models.ForeignKey(
+        Institute,
+        on_delete=models.CASCADE,
+        related_name="fund_managers")
 
     def __str__(self):
-        return self.name
+        return self.user.username

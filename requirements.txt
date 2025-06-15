@@ -1,0 +1,13 @@
+Django>=5.1,<6.0
+djangorestframework
+gunicorn
+dj-database-url
+python-dotenv
+whitenoise
+django-filter
+markdown
+psycopg2-binary
+requests
+pandas
+numpy
+Riskfolio-Lib==6.3.1

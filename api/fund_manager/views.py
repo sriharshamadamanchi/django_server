@@ -1,11 +1,17 @@
-from rest_framework import viewsets
-from rest_framework.permissions import IsAdminUser
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
 
-from api.institute.models import Institute
-from api.institute.serializers import InstituteSerializer
+from api.fund_manager.models import FundManager
+from api.fund_manager.serializers import FundManagerSerializer
 
 
-class InstituteViewSet(viewsets.ModelViewSet):
-    queryset = Institute.objects.all()
-    serializer_class = InstituteSerializer
-    permission_classes = [IsAdminUser]  # Only admin users can access this endpoint
+class FundManagerViewSet(viewsets.ModelViewSet):
+    queryset = FundManager.objects.all()
+    serializer_class = FundManagerSerializer
+    permission_classes = [permissions.IsAdminUser]  # restrict all CRUD to admin only
+
+    def create(self, request, *args, **kwargs):
+        user = request.data.get("user")
+        if FundManager.objects.filter(user_id=user).exists():
+            return Response({"error": "This user is already a FundManager."}, status=status.HTTP_400_BAD_REQUEST)
+        return super().create(request, *args, **kwargs)
